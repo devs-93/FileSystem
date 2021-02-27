@@ -6,7 +6,6 @@ import com.ddfs.scala.oop.files.Directory
 import java.util.Scanner
 
 object FileSystem extends App {
-
   val root = Directory.ROOT
   var state = State(root,root)
   val scanner = new Scanner(System.in)

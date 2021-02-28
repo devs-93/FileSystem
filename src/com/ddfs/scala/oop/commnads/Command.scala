@@ -12,6 +12,7 @@ object Command {
   val LS = "ls"
   val PWD = "pwd"
   val VIM = "vim"
+  val CD = "cd"
 
   def emptyCommand: Command = {
     new Command {
@@ -54,7 +55,16 @@ object Command {
         new vim(tokens(1))
       }
     }
-    else {
+    else if (CD.equals(tokens(0))) {
+      if (tokens.length < 2) {
+        incompleteCommand(CD)
+      }
+      else {
+        new Cd(tokens(1))
+      }
+    }
+    else
+    {
       new UnknownCommand
     }
 

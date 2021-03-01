@@ -27,11 +27,24 @@ class Directory(override val parentPath: String,
     }
   }
 
+  def findDescendant(relativePath: String): Directory = {
+    if(relativePath.isEmpty){this}
+    else {
+      findDescendant(relativePath.split(Directory.SEPARATOR).toList)
+    }
+  }
+
+  def removeEntry(entryNameToRemove: String): Directory = {
+    if(!hasEntry(entryNameToRemove)) this
+    else {
+      new Directory(parentPath,name,contents.filter(x => !x.name.equals(entryNameToRemove)))
+    }
+  }
+
 
   def addEntry(newEntry: DirEntry): Directory = {
     new Directory(parentPath, name, contents :+ newEntry)
   }
-
 
 
   def findEntry(entryName: String): DirEntry = {
@@ -53,16 +66,21 @@ class Directory(override val parentPath: String,
 
 
   def replaceEntry(entryName: String, newEntry: DirEntry): Directory = {
-    new Directory(parentPath,name,contents.filter(e => !e.name.equals((entryName))):+newEntry)
+    new Directory(parentPath, name, contents.filter(e => !e.name.equals((entryName))) :+ newEntry)
   }
 
-  def isRoot :Boolean={
+  def isRoot: Boolean = {
     parentPath.isEmpty
   }
+
   def asDictionary: Directory = this
+
   def asFile: File = throw new FilesystemException("A file can not be converted into directory !!")
-  def getType:String="Directory"
+
+  def getType: String = "Directory"
+
   override def isDirectory: Boolean = true
+
   override def isFile: Boolean = false
 }
 
